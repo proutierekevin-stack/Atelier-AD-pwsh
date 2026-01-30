@@ -1,5 +1,6 @@
 Atelier PowerShell & Active Directory
 
+#         PARTIE 1
 # 1.1 - Installation du module (si nécessaire)
 # Vérifiez si le module ActiveDirectory est disponible sur votre système. Si ce n'est pas le cas, installez-le.
      Get-Module -ListAvailable ActiveDirectory                                                                # Vérifier si le Pc à le module
@@ -27,3 +28,47 @@ Cmdlet          Get-ADUserResultantPasswordPolicy                  1.0.1.0    Ac
 # Affichez le nom du domaine, le niveau fonctionnel et les contrôleurs de domaine
     Get-ADDomain | Select-Object DNSRoot, DomainMode
 
+     DNSRoot              DomainMode
+     -------              ----------
+   formation.lan           Windows2025Domain
+
+# 1.4 - Premier utilisateur
+
+# Récupérez les informations de votre propre compte utilisateur AD     
+# Affichez toutes ses propriétés
+    Get-ADUser -Identity "Administrateur" -Properties *
+
+# Affichez uniquement son nom, son email et son titre
+    Get-ADUser -Identity "Administrateur" -Properties EmailAddress, Title | Select-Object Name, EmailAddress, Title
+
+    ------------------------------------------------------------------------------------------------
+
+#        PARTIE 2 
+# GESTION DES UTILISATEURS
+
+# 2.1 - Créer des utilisateurs
+# Créez les utilisateurs suivants dans l'OU de votre choix :
+
+Prénom  	Nom	    Login	     Email	                           Titre
+Alice    	Martin	 amartin	alice.martin@techsecure.fr  	 Développeuse
+Bob     	Dubois   bdubois    bob.dubois@techsecure.fr	     Administrateur Système
+Claire	    Bernard	 cbernard	claire.bernard@techsecure.fr	 Chef de Projet
+
+# Création du OU (TechSecure)
+    New-ADOrganizationalUnit -Name "TechSecure" -Path "DC=formation,DC=lan"
+# Création du OU (Users)
+    New-ADOrganizationalUnit -Name "Users" -Path "OU=TechSecure,DC=formation,DC=lan"
+
+# Création des utilisateurs    (Définir un mot de passe initial (ex: "P@ssw0rd123!", Le compte doit être activé, Le mot de passe doit être changé à la première connexion)
+
+$password = ConvertTo-SecureString &quot;P@ssw0rd123!&quot; -AsPlainText -Force
+$path = &quot;OU=Users,OU=TechSecure,DC=formation,DC=lan&quot;
+
+# Alice
+New-ADUser -Name &quot;Alice Martin&quot; -GivenName &quot;Alice&quot; -Surname &quot;Martin&quot; -SamAccountName &quot;amartin&quot; -UserPrincipalName &quot;amartin@techsecure.fr&quot; -EmailAddress &quot;alice.martin@techsecure.fr&quot; -Title &quot;Développeuse&quot; -Path $path -AccountPassword $password -ChangePasswordAtLogon $true -Enabled $true
+
+# Bob
+New-ADUser -Name &quot;Bob Dubois&quot; -GivenName &quot;Bob&quot; -Surname &quot;Dubois&quot; -SamAccountName &quot;bdubois&quot; -UserPrincipalName &quot;bdubois@techsecure.fr&quot; -EmailAddress &quot;bob.dubois@techsecure.fr&quot; -Title &quot;Administrateur Système&quot; -Path $path -AccountPassword $password -ChangePasswordAtLogon $true -Enabled $true
+
+# Claire
+New-ADUser -Name &quot;Claire Bernard&quot; -GivenName &quot;Claire&quot; -Surname &quot;Bernard&quot; -SamAccountName &quot;cbernard&quot; -UserPrincipalName &quot;cbernard@techsecure.fr&quot; -EmailAddress &quot;claire.bernard@techsecure.fr&quot; -Title &quot;Chef de Projet&quot; -Path $path -AccountPassword $password -ChangePasswordAtLogon $true -Enabled $true
