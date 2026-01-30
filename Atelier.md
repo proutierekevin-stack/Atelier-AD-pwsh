@@ -61,14 +61,20 @@ Claire	    Bernard	 cbernard	claire.bernard@techsecure.fr	 Chef de Projet
 
 # Création des utilisateurs    (Définir un mot de passe initial (ex: "P@ssw0rd123!", Le compte doit être activé, Le mot de passe doit être changé à la première connexion)
 
-$password = ConvertTo-SecureString &quot;P@ssw0rd123!&quot; -AsPlainText -Force
-$path = &quot;OU=Users,OU=TechSecure,DC=formation,DC=lan&quot;
+![alt text](<carbon (7).png>)
 
-# Alice
-New-ADUser -Name &quot;Alice Martin&quot; -GivenName &quot;Alice&quot; -Surname &quot;Martin&quot; -SamAccountName &quot;amartin&quot; -UserPrincipalName &quot;amartin@techsecure.fr&quot; -EmailAddress &quot;alice.martin@techsecure.fr&quot; -Title &quot;Développeuse&quot; -Path $path -AccountPassword $password -ChangePasswordAtLogon $true -Enabled $true
 
-# Bob
-New-ADUser -Name &quot;Bob Dubois&quot; -GivenName &quot;Bob&quot; -Surname &quot;Dubois&quot; -SamAccountName &quot;bdubois&quot; -UserPrincipalName &quot;bdubois@techsecure.fr&quot; -EmailAddress &quot;bob.dubois@techsecure.fr&quot; -Title &quot;Administrateur Système&quot; -Path $path -AccountPassword $password -ChangePasswordAtLogon $true -Enabled $true
+# 2.2 Rechercher des utilisateurs
+# Lister tous les utilisateur de votre domaine
+    Get-ADUser -Filter *
 
-# Claire
-New-ADUser -Name &quot;Claire Bernard&quot; -GivenName &quot;Claire&quot; -Surname &quot;Bernard&quot; -SamAccountName &quot;cbernard&quot; -UserPrincipalName &quot;cbernard@techsecure.fr&quot; -EmailAddress &quot;claire.bernard@techsecure.fr&quot; -Title &quot;Chef de Projet&quot; -Path $path -AccountPassword $password -ChangePasswordAtLogon $true -Enabled $true
+# Trouver l'utilisateur dont le login est "amartin"
+    Get-ADUser -Identity "amartin"
+
+# Trouver les utilisateurs dont le nom commence par un "B"
+    Get-ADUser -Filter 'Surname -like "B*"' | Select-Object Name, SamAccountName
+
+# Trouvez tous les utilisateurs qui ont "Administrateur" dans leur titre
+    
+
+
