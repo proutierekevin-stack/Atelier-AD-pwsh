@@ -1,5 +1,7 @@
 Atelier PowerShell & Active Directory
 
+#DETAILS
+
 #         PARTIE 1
 # 1.1 - Installation du module (si nécessaire)
 # Vérifiez si le module ActiveDirectory est disponible sur votre système. Si ce n'est pas le cas, installez-le.
@@ -211,5 +213,15 @@ Modifiez votre script pour ajouter automatiquement les utilisateurs dans les gro
 #   PARTIE 6
 # Scripts d'automatisation
 # Créez un script New-Employee.ps1 qui prend des paramètres et effectue un onboarding complet :
+# Script d'offboarding Créez un script Remove-Employee.ps1 
+# Script de modification de mot de passe Créez un script Reset-EmployeePassword.ps1
 
+
+#   PARTIE 7 & 8: Rapports et audits & Outil de gestion AD complet
+
+![alt text](<carbon (16).png>)
+
+![alt text](image.png)
+
+![alt text](image-1.png)
 

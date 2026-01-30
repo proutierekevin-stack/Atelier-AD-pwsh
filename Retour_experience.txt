@@ -1,0 +1,47 @@
+==========================================================
+        RETOUR D'EXPÉRIENCE - PROJET TECHSECURE
+==========================================================
+
+1. Quelles sont les 3 cmdlets AD utilisées le plus souvent ?
+------------------------------------------------------------------
+* Get-ADUser : Pour consulter les propriétés et vérifier l'état des comptes.
+* Set-ADUser : Pour modifier les attributs (Département, Titre, etc.).
+* New-ADUser : Pour automatiser la création des nouveaux collaborateurs.
+
+2. Quelle est la différence entre -Filter et -LDAPFilter ?
+------------------------------------------------------------------
+* -Filter : Utilise la syntaxe PowerShell, plus simple et lisible pour les administrateurs Windows (ex: {Name -eq "Kevin"}).
+* -LDAPFilter : Utilise la syntaxe standard RFC (LDAP), plus complexe mais universelle et souvent plus performante sur des annuaires contenant des dizaines de milliers d'objets.
+
+3. Pourquoi utiliser try-catch avec les opérations AD ?
+------------------------------------------------------------------
+L'Active Directory est un service critique. Les erreurs sont fréquentes (doublon de login, problème de connexion au contrôleur de domaine, permissions insuffisantes). Le bloc "try-catch" permet de ne pas interrompre le script brutalement et de logger l'erreur précisément pour le débogage.
+
+4. Comment gérer l'AD de plusieurs domaines différents ?
+------------------------------------------------------------------
+J'utiliserais le paramètre "-Server" présent dans les cmdlets AD pour spécifier le contrôleur de domaine cible. On peut également interroger le Catalogue Global (port 3268) pour effectuer des recherches sur l'ensemble de la forêt.
+
+5. Quels sont les risques de sécurité de l'automatisation ?
+------------------------------------------------------------------
+* Exposition des secrets : Stocker des mots de passe en clair dans les scripts ou les CSV.
+* Droits excessifs : Utiliser un compte "Domain Admin" pour des tâches qui ne nécessitent que des droits de délégation.
+* Erreur de masse : Un script mal testé peut supprimer ou modifier des milliers de comptes en quelques secondes.
+
+6. Améliorations pour la mise en production ?
+------------------------------------------------------------------
+* Signature numérique : Signer les scripts pour empêcher toute modification non autorisée.
+* Journalisation avancée : Envoyer les logs vers un serveur centralisé (SIEM).
+* Validation des données : Utiliser des expressions régulières (Regex) pour valider les noms et éviter l'injection de caractères spéciaux.
+
+
+
+
+1/ Interface Graphique (GUI) : Créer une application avec des formulaires (WPF/WinForms) pour éviter aux techniciens de manipuler directement la console.
+
+2/ Délégation de droits : Créer un système permettant aux managers de réinitialiser le mot de passe uniquement de leur propre équipe (moindre privilège).
+
+3/ Self-Service Password Reset : Mettre en place un portail où l'utilisateur peut déverrouiller son compte via un code reçu par SMS (MFA).
+
+4/ Audit en temps réel : Ajouter un script qui surveille les groupes sensibles (ex: Admins du domaine) et envoie une alerte immédiate en cas d'ajout de membre.
+
+5/ Provisioning Cloud : Synchroniser la création de l'utilisateur AD avec la création automatique d'une licence Microsoft 365 et d'une boîte mail Exchange.
