@@ -14,8 +14,6 @@ Atelier PowerShell & Active Directory
 
 # Listez uniquement les cmdlets qui commencent par Get-ADUser
     Get-Command -Module ActiveDirectory -Name Get-ADUser*
-
-CommandType     Name                                               Version    Source
 -----------     ----                                               -------    ------
 Cmdlet          Get-ADUser                                         1.0.1.0    ActiveDirectory
 Cmdlet          Get-ADUserResultantPasswordPolicy                  1.0.1.0    ActiveDirectory
@@ -23,5 +21,9 @@ Cmdlet          Get-ADUserResultantPasswordPolicy                  1.0.1.0    Ac
 # Affichez l'aide complète de la cmdlet Get-ADUser
     Get-Help Get-ADUser -Full
 
-    
+# 1.3 - Connexion à l'Active Directory
+# Testez votre connexion à l'AD en récupérant des informations sur le domaine    
+    Get-ADDomain
+# Affichez le nom du domaine, le niveau fonctionnel et les contrôleurs de domaine
+    Get-ADDomain | Select-Object DNSRoot, DomainMode
 
