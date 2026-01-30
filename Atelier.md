@@ -63,7 +63,7 @@ Claire	    Bernard	 cbernard	claire.bernard@techsecure.fr	 Chef de Projet
 
 # Création des utilisateurs    (Définir un mot de passe initial (ex: "P@ssw0rd123!", Le compte doit être activé, Le mot de passe doit être changé à la première connexion)
 
-![alt text](<carbon (7).png>)
+![carbon](docs/images/Carbon7.png)
 
 
 # 2.2 Rechercher des utilisateurs
@@ -119,7 +119,7 @@ GRP_IT             	Security	        Global	                    Ensemble du dép
 # On crée l'OU Groups à l'intérieur de TechSecure
     New-ADOrganizationalUnit -Name "Groups" -Path "OU=TechSecure,DC=formation,DC=lan"
 
-![alt text](<carbon (8)-1.png>)
+ ![carbon](docs/images/Carbon8.png)
 
 # - Ajouter des membres
 
@@ -128,18 +128,19 @@ GRP_IT             	Security	        Global	                    Ensemble du dép
 # Ajoutez "bdubois" dans le groupe "GRP_Admins_Systeme"
     Add-ADGroupMember -Identity "GRP_Admins_Systeme" -Members "bdubois"
 # Créez 2 nouveaux utilisateurs et ajoutez-les dans "GRP_Developpeurs"
-![alt text](<carbon (9).png>)
+![carbon](docs/images/Carbon9.png)
    
 # Ajoutez tous les membres des trois premiers groupes dans "GRP_IT"
     Add-ADGroupMember -Identity "GRP_IT" -Members "GRP_Developpeurs", "GRP_Admins_Systeme", "GRP_Chefs_Projet"
 # Lister les appartenances
+![carbon](docs/images/Carbon10.png)
 
 # Affichez tous les membres du groupe "GRP_IT"
     Get-ADGroupMember -Identity "GRP_IT" | Select-Object Name, objectClass
 # Affichez tous les groupes dont "amartin" est membre
     Get-ADPrincipalGroupMembership -Identity "amartin" | Select-Object Name
 # Comptez combien de membres a chaque groupe
-![alt text](<carbon (11)-1.png>)
+![carbon](docs/images/Carbon11.png)
 
 # Retirer des membres
 # Retirez "amartin" du groupe "GRP_IT"
@@ -150,11 +151,11 @@ GRP_IT             	Security	        Global	                    Ensemble du dép
 # 3.5 - Groupes imbriqués
 
 # Créez un groupe "GRP_Tous_Utilisateurs"
-![alt text](<carbon (12).png>)
+![carbon](docs/images/Carbon12.png)
 # Ajoutez-y les groupes "GRP_IT" (pas les membres individuels, mais le groupe lui-même)
     Add-ADGroupMember -Identity "GRP_Tous_Utilisateurs" -Members "GRP_IT"
 # Listez les membres (directs et récursifs) de "GRP_Tous_Utilisateurs"
-![alt text](<carbon (13)-1.png>)
+![carbon](docs/images/Carbon13.png)
 
 
 #  Partie 4 : Organisation avec les Unités Organisationnelles (OU)
@@ -172,7 +173,7 @@ TechSecure/
 ├── Groupes/
 └── Ordinateurs/
 
-![alt text](<carbon (14).png>)
+![carbon](docs/images/Carbon14.png)
 
 # Déplacer des objets
 
@@ -219,9 +220,9 @@ Modifiez votre script pour ajouter automatiquement les utilisateurs dans les gro
 
 #   PARTIE 7 & 8: Rapports et audits & Outil de gestion AD complet
 
-![alt text](<carbon (16).png>)
+![carbon](docs/images/Carbon16.png)
 
-![alt text](image.png)
+![carbon](docs/images/image.png)
 
-![alt text](image-1.png)
+![carbon](docs/images/image1.png)
 
