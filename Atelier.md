@@ -103,6 +103,44 @@ Le terminal affiche False dans la colonne Enabled, le compte est bien désactiv�
     Remove-ADUser -Identity "cbernard" -Confirm:$true
 
 
+#       PARTIE 3
+#     GESTION DES GROUPES
 
+Créez les groupes de sécurité suivants :
 
+Nom du groupe	      Type	           Portée	                    Description
+GRP_Developpeurs	Security	        Global                     	Équipe de développement
+GRP_Admins_Systeme	Security	        Global                     	Administrateurs système
+GRP_Chefs_Projet	Security	        Global                     	Chefs de projet
+GRP_IT             	Security	        Global	                    Ensemble du département IT
 
+# On crée l'OU Groups à l'intérieur de TechSecure
+    New-ADOrganizationalUnit -Name "Groups" -Path "OU=TechSecure,DC=formation,DC=lan"
+
+![alt text](<carbon (8)-1.png>)
+
+# - Ajouter des membres
+
+# Ajoutez "amartin" dans le groupe "GRP_Developpeurs"
+    Add-ADGroupMember -Identity "GRP_Developpeurs" -Members "amartin"
+# Ajoutez "bdubois" dans le groupe "GRP_Admins_Systeme"
+    Add-ADGroupMember -Identity "GRP_Admins_Systeme" -Members "bdubois"
+# Créez 2 nouveaux utilisateurs et ajoutez-les dans "GRP_Developpeurs"
+![alt text](<carbon (9).png>)
+   
+# Ajoutez tous les membres des trois premiers groupes dans "GRP_IT"
+    Add-ADGroupMember -Identity "GRP_IT" -Members "GRP_Developpeurs", "GRP_Admins_Systeme", "GRP_Chefs_Projet"
+# Lister les appartenances
+
+# Affichez tous les membres du groupe "GRP_IT"
+    Get-ADGroupMember -Identity "GRP_IT" | Select-Object Name, objectClass
+# Affichez tous les groupes dont "amartin" est membre
+    Get-ADPrincipalGroupMembership -Identity "amartin" | Select-Object Name
+# Comptez combien de membres a chaque groupe
+![alt text](<carbon (11)-1.png>)
+
+# Retirer des membres
+# Retirez "amartin" du groupe "GRP_IT"
+    Remove-ADGroupMember -Identity "GRP_IT" -Members "amartin" -Confirm:$false
+# Vérifiez qu'elle n'en est plus membre
+    Get-ADGroupMember -Identity "GRP_IT" | Select-Object Name, SamAccountName
