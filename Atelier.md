@@ -144,3 +144,72 @@ GRP_IT             	Security	        Global	                    Ensemble du dép
     Remove-ADGroupMember -Identity "GRP_IT" -Members "amartin" -Confirm:$false
 # Vérifiez qu'elle n'en est plus membre
     Get-ADGroupMember -Identity "GRP_IT" | Select-Object Name, SamAccountName
+
+# 3.5 - Groupes imbriqués
+
+# Créez un groupe "GRP_Tous_Utilisateurs"
+![alt text](<carbon (12).png>)
+# Ajoutez-y les groupes "GRP_IT" (pas les membres individuels, mais le groupe lui-même)
+    Add-ADGroupMember -Identity "GRP_Tous_Utilisateurs" -Members "GRP_IT"
+# Listez les membres (directs et récursifs) de "GRP_Tous_Utilisateurs"
+![alt text](<carbon (13)-1.png>)
+
+
+#  Partie 4 : Organisation avec les Unités Organisationnelles (OU)
+# Créer une structure d'OU
+
+# Créez la structure suivante dans votre domaine :
+
+TechSecure/
+├── Utilisateurs/
+│   ├── Informatique/
+│   │   ├── Developpement/
+│   │   └── Infrastructure/
+│   ├── RH/
+│   └── Commercial/
+├── Groupes/
+└── Ordinateurs/
+
+![alt text](<carbon (14).png>)
+
+# Déplacer des objets
+
+# Déplacez l'utilisateur "amartin" dans l'OU "TechSecure/Utilisateurs/Informatique/Developpement"
+    $targetOU = "OU=Developpement,OU=Informatique,OU=Utilisateurs,OU=TechSecure,DC=formation,DC=lan"
+    Get-ADUser -Identity "amartin" | Move-ADObject -TargetPath $targetOU
+# Déplacez tous vos groupes créés précédemment dans l'OU "TechSecure/Groupes"
+    $targetGroupsOU = "OU=Groupes,OU=TechSecure,DC=formation,DC=lan"
+    Get-ADGroup -Filter 'Name -like "GRP_*"' | Move-ADObject -TargetPath $targetGroupsOU
+# Listez tous les utilisateurs présents dans l'OU "Informatique" (incluant les sous-OU)
+    $infoOU = "OU=Informatique,OU=Utilisateurs,OU=TechSecure,DC=formation,DC=lan"
+    Get-ADUser -Filter * -SearchBase $infoOU -SearchScope Subtree | Select-Object Name, DistinguishedName
+
+# Recherche par OU
+# Comptez le nombre d'utilisateurs dans l'OU "Informatique" uniquement (sans les sous-OU)
+    (Get-ADUser -Filter * -SearchBase $infoOU -SearchScope OneLevel).Count
+# Comptez le nombre d'utilisateurs dans l'OU "Informatique" en incluant tous les sous-niveaux
+    (Get-ADUser -Filter * -SearchBase $infoOU -SearchScope Subtree).Count
+
+
+#   PARTIE 5
+#  Import en masse depuis CSV
+# Préparer le fichier csv
+Créez un fichier nouveaux_employes.csv avec 13 employés fictifs (Prenom,Nom,Login,Titre,Departement,OU)
+Créez un script Import-ADUsersFromCSV.ps1
+Améliorer le script avec gestion d'erreurs
+Modifiez votre script pour :
+
+Vérifier que le CSV existe avant de commencer
+Utiliser try-catch pour gérer les erreurs de création
+Vérifier si l'utilisateur existe déjà avant de le créer
+Logger les succès et les erreurs dans un fichier import.log
+Afficher un résumé à la fin (X créés, Y erreurs)
+Ajoutez une colonne "Groupes" dans votre CSV (plusieurs groupes séparés par des points-virgules).
+
+Modifiez votre script pour ajouter automatiquement les utilisateurs dans les groupes spécifiés.
+
+#   PARTIE 6
+# Scripts d'automatisation
+# Créez un script New-Employee.ps1 qui prend des paramètres et effectue un onboarding complet :
+
+
