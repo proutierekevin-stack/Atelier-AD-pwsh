@@ -75,6 +75,34 @@ Claire	    Bernard	 cbernard	claire.bernard@techsecure.fr	 Chef de Projet
     Get-ADUser -Filter 'Surname -like "B*"' | Select-Object Name, SamAccountName
 
 # Trouvez tous les utilisateurs qui ont "Administrateur" dans leur titre
-    
+    Get-ADUser -Filter 'Title -like "*Administrateur*"' -Properties Title | Select-Object Name, Title
+
+# Comptez le nombre total d'utilisateurs dans votre domaine
+    (Get-ADUser -Filter *).Count
+
+# 2.3 Modifier des utilisateurs    
+# Pour l'utilisateur "amartin" :
+Changez son numéro de téléphone (ajoutez: "01 23 45 67 89")
+Ajoutez une description ("Membre de l'équipe développement")
+Changez son titre en "Développeuse Senior"
+
+    Set-ADUser -Identity "amartin" `
+           -OfficePhone "01 23 45 67 89" `
+           -Description "Membre de l'équipe développement" `
+           -Title "Développeuse Senior"
+# Vérification
+    Get-ADUser -Identity "amartin" -Properties OfficePhone, Description, Title | Select-Object Name, OfficePhone, Description, Title
+
+# Désactiver et supprimer
+# Désactivez le compte "bdubois"
+    Disable-ADAccount -Identity "bdubois"
+# Vérifiez qu'il est bien désactivé
+    Get-ADUser -Identity "bdubois" | Select-Object Name, Enabled
+Le terminal affiche False dans la colonne Enabled, le compte est bien désactivé.
+# Supprimez le compte "cbernard" (attention : demander confirmation avant)
+    Remove-ADUser -Identity "cbernard" -Confirm:$true
+
+
+
 
 
